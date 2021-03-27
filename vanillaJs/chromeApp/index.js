@@ -1,8 +1,5 @@
-const calc = {
-    plus : function(a, b){
-        return a+b;
-    }
-}
-
-const plus = calc.plus(5, 5)
-console.log(plus);
+const title = document.getElementById("title");
+title.innerHTML="Hi! From JS, Fucker";
+title.style.color = "red";
+document.title = "I own you now";
+console.dir(title);
