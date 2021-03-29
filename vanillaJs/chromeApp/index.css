@@ -80,9 +80,6 @@ body{
     border-radius: 15px;
 }
 
-li{
-    /* display: inline-block; */
-}
 button{
     background-color: transparent !important;
     border-color: transparent;
@@ -94,14 +91,19 @@ button:hover{
     opacity: 1;
 }
 input[type=text] {
-    background-color: rgba(162, 155, 254,.7);
+    background-color: rgba(45, 52, 54,0.7);
+    border-radius: 15px;
     border-color: transparent;
     color: rgb(255,255,255);
-    border-radius: 10px;
     padding: 24px 12px;
     width: 30%;
     height: 30%;
+
   }
+
+input::placeholder{
+    color:rgba(255,255,255,200);
+}
 
 .js-clock{
     font-weight: bold;
