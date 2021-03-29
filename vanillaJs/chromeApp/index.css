@@ -1,13 +1,14 @@
 body{
     background-color: #2c3e50;
+    color : white;
+    text-align: center;
+    font-size: 200%;
 }
 
 .btn {
     cursor: pointer;
 }
-body {
-    color : white;
-}
+
 
 .clicked {
     color: #7f8c8d;
@@ -31,6 +32,16 @@ body {
     }
 }
 
+@keyframes drop{
+       from{ 
+           opacity: 0;
+           margin-top : 0px
+        };
+       to{
+           opacity: 1;
+           margin-top : 100px
+        };
+}
 .bgImage{
     position: absolute;
     top: 0;
@@ -39,4 +50,59 @@ body {
     height: 100%;
     z-index: -1;
     animation: fadeIn .5s linear;
+}
+
+#timer{
+    animation: drop 1s linear;
+}
+
+.js-weather{
+    position: fixed;
+    top: 90%;
+    bottom: 10%;
+    right: 5%;
+    font-size: 50%;
+    /* font-weight: initial; */
+    background-color: rgba(255,255,255,255);
+    z-index: 2;
+}
+
+.js-toDoList{
+    list-style: none;
+    width: 100%;
+    text-align: left;
+    margin: 5% 0 3% 24%;
+    padding: 1% 0 1% 2%;
+    
+    width: 60%;
+    font-size: 80%;
+    background-color: rgba(45, 52, 54,0.7);
+    border-radius: 15px;
+}
+
+li{
+    /* display: inline-block; */
+}
+button{
+    background-color: transparent !important;
+    border-color: transparent;
+    opacity: .5;
+    /* margin: 0 40% 0 60%; */
+}
+button:hover{
+    cursor: pointer;
+    opacity: 1;
+}
+input[type=text] {
+    background-color: rgba(162, 155, 254,.7);
+    border-color: transparent;
+    color: rgb(255,255,255);
+    border-radius: 10px;
+    padding: 24px 12px;
+    width: 30%;
+    height: 30%;
+  }
+
+.js-clock{
+    font-weight: bold;
 }
