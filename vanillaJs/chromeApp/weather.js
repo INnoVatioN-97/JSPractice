@@ -43,6 +43,7 @@ function loadCoords(){
     if(loadedCoords === null){
         askForCoord();
     }else{
+        askForCoord();
         const parseCoords = JSON.parse(loadedCoords);
         getWeather(parseCoords.latitude, parseCoords.longitude);
     }
