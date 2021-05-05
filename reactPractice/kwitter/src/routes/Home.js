@@ -1,5 +1,49 @@
-import React from 'react';
+import Kweet from 'components/Kweet';
+import { dbService } from 'fBase';
+import React, {useEffect, useState} from 'react';
 
-const Home = () => <span>Home</span>;
+const Home = ({userObj}) =>{
+    const [kweet, setKweet] = useState("");
+    const [kweets, setKweets] = useState([]);
+    
+    useEffect(()=> {
+        dbService.collection("kweets").onSnapshot((snapshot)=>{
+            const kweetArray= snapshot.docs.map(doc=> ({
+                id: doc.id, 
+                ...doc.data(),
+            }));
+            setKweets(kweetArray)
+        })
+    }, []);
+    const onSubmit = async (event) =>{
+        event.preventDefault();
+        //좌측 kweet = Key 값
+        await dbService.collection("kweets").add({
+            text:kweet,
+            createdAt: Date.now(),
+            creatorId: userObj.uid,
+        });
+        setKweet("");
+    };
+    const onChange = (event) => {
+        const {
+            target:{value},
+        } = event;
+        setKweet(value);
+    };
+    return (
+        <div>
+            <form onSubmit={onSubmit}>
+                <input value={kweet} onChange={onChange} type="text" placeholder="What's on your mind?" maxLength={120} />
+                <input type="submit" value="Kweet" />
+            </form>
+            <div>
+                {kweets.map((kweet) => (
+                    <Kweet key={kweet.id} kweetObj={kweet} isOwner={kweet.creatorId === userObj.uid}/>
+                ))}
+            </div>
+        </div>
+    );
+};
 export default Home;
 //function component
