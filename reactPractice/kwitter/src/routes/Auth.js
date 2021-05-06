@@ -9,38 +9,38 @@ const Auth = () => {
     const [newAccount, setNewAccount] = useState(true);
     const [error, setError] = useState("");
     const onChange = (event) => {
-        const {target: {name, value}} = event;
-        if(name === "email") {
+        const { target: { name, value } } = event;
+        if (name === "email") {
             setEmail(value);
-        }else if(name === "password"){
+        } else if (name === "password") {
             setPassword(value);
         }
     };
     const onSubmit = async (event) => {
         event.preventDefault();
-        try{
+        try {
             let data;
-            if(newAccount){
+            if (newAccount) {
                 // create account
                 data = await authService.createUserWithEmailAndPassword(email, password);
-            }else{
+            } else {
                 // log in
                 data = await authService.signInWithEmailAndPassword(email, password);
             }
             console.log(data);
-        }catch(error){
+        } catch (error) {
             setError(error.message);
         }
     };
-    const toggleAccount = ()=> setNewAccount((prev) => !prev);
+    const toggleAccount = () => setNewAccount((prev) => !prev);
     const onSocialClick = async (event) => {
         const {
-            target:{ name },
+            target: { name },
         } = event;
         let provider;
-        if(name === "google"){
+        if (name === "google") {
             provider = new firebaseInstance.auth.GoogleAuthProvider();
-        }else if(name === "github"){
+        } else if (name === "github") {
             provider = new firebaseInstance.auth.GithubAuthProvider();
         }
         const data = await authService.signInWithPopup(provider);
@@ -49,8 +49,8 @@ const Auth = () => {
     return (
         <div>
             <form onSubmit={onSubmit}>
-                <input name="email" type="email" placeholder="Email" required value={email} onChange={onChange}/>
-                <input name="password" type="password" placeholder="Password" required value={password} onChange={onChange}/>
+                <input name="email" type="email" placeholder="Email" required value={email} onChange={onChange} />
+                <input name="password" type="password" placeholder="Password" required value={password} onChange={onChange} />
                 <input type="submit" value={newAccount ? "Create Account" : "Sign In"} />
                 {error}
                 <span onClick={toggleAccount}>

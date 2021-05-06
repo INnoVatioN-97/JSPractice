@@ -1,20 +1,20 @@
-import { dbService } from "fBase";
-import React, {useState} from "react";
+import { dbService, storageService } from "fBase";
+import React, { useState } from "react";
 
 const Kweet = ({ kweetObj, isOwner }) => {
     const [editing, setEditing] = useState(false);
     const [newKweet, setNewKweet] = useState(kweetObj.text);
     const onDeleteClick = async () => {
         const ok = window.confirm("Are you sure to delete this kweet?");
-        console.log(ok);
-        if(ok) {
+        if (ok) {
             await dbService.doc(`kweets/${kweetObj.id}`).delete();
+            await storageService.refFromURL(kweetObj.attachmentUrl).delete();
         }
     };
     const toggleEditing = () => setEditing((prev) => !prev);
     const onChange = (event) => {
         const {
-            target:{value},
+            target: { value },
         } = event;
         setNewKweet(value);
     };
@@ -28,30 +28,37 @@ const Kweet = ({ kweetObj, isOwner }) => {
     return (
         <div>
             {editing ? (
-                    <>
-                        <form onSubmit={onSubmit}>
-                            <input 
-                                type="text"
-                                placeholder="Edit your Kweet"
-                                value={newKweet} 
-                                required 
-                                onChange={onChange}
-                            />
-                            <input type="submit" value="Update Kweet" />
-                        </form>
-                        <button onClick={toggleEditing}>Cancel</button>
-                    </>
-                ) : (
-                    <>
-                        <h4>{kweetObj.text}</h4>
-                        {isOwner && (
-                            <>
-                                <button onClick={onDeleteClick}>Delete Kweet</button>
-                                <button onClick={toggleEditing}>Edit Kweet</button>
-                            </>
-                        )}
-                    </>
-                )
+                <>
+                    {isOwner && (
+                        <>
+                            <form onSubmit={onSubmit}>
+                                <input
+                                    type="text"
+                                    placeholder="Edit your Kweet"
+                                    value={newKweet}
+                                    required
+                                    onChange={onChange}
+                                />
+                                <input type="submit" value="Update Kweet" />
+                            </form>
+                            <button onClick={toggleEditing}>Cancel</button>
+                        </>
+                    )}
+                </>
+            ) : (
+                <>
+                    <h4>{kweetObj.text}</h4>
+                    {kweetObj.attachmentUrl && (
+                        <img src={kweetObj.attachmentUrl} width="50px" height="50px" />
+                    )}
+                    {isOwner && (
+                        <>
+                            <button onClick={onDeleteClick}>Delete Kweet</button>
+                            <button onClick={toggleEditing}>Edit Kweet</button>
+                        </>
+                    )}
+                </>
+            )
             }
         </div>
     );
