@@ -9,18 +9,6 @@ export default ({ refreshUser, userObj }) => {
         authService.signOut();
         history.push("/");
     };
-    // const getMyKweets = async () => {
-    //     //kweets 컬렉션을 userObj.uid와 문서의 creatorId가 같은것들만 필터링해서 가져오기
-    //     const kweets = await dbService
-    //         .collection("kweets")
-    //         .where("creatorId", "==", userObj.uid)
-    //         .orderBy("createdAt")
-    //         .get();
-    //     console.log(kweets.docs.map(doc => doc.data()));
-    // };
-    // useEffect(() => {
-    //     getMyKweets();
-    // }, []);
 
     const onChange = (event) => {
         const {
