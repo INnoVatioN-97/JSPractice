@@ -1,17 +1,64 @@
+import React, { useState } from 'react';
 import { authService } from 'fBase';
-import React from 'react';
-import { useHistory } from 'react-router';
-
+import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line import/no-anonymous-default-export
-export default () => {
+export default ({ refreshUser, userObj }) => {
     const history = useHistory();
+    const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
     const onLogOutClick = () => {
         authService.signOut();
         history.push("/");
+    };
+    // const getMyKweets = async () => {
+    //     //kweets 컬렉션을 userObj.uid와 문서의 creatorId가 같은것들만 필터링해서 가져오기
+    //     const kweets = await dbService
+    //         .collection("kweets")
+    //         .where("creatorId", "==", userObj.uid)
+    //         .orderBy("createdAt")
+    //         .get();
+    //     console.log(kweets.docs.map(doc => doc.data()));
+    // };
+    // useEffect(() => {
+    //     getMyKweets();
+    // }, []);
+
+    const onChange = (event) => {
+        const {
+            target: { value },
+        } = event;
+        setNewDisplayName(value);
     }
+    const onSubmit = async (event) => {
+        event.preventDefault(); //창 새로고침 막기.
+        if (userObj.displayName !== newDisplayName) {
+            await userObj.updateProfile({
+                displayName: newDisplayName,
+            });
+        }
+        refreshUser();
+    };
     return (
-        <>
-            <button onClick={onLogOutClick}>Log Out</button>
-        </>
+        <div className="container">
+            <form onSubmit={onSubmit} className="profileForm">
+                <input onChange={onChange}
+                    type="text"
+                    autoFocus
+                    placeholder="Display Name"
+                    value={newDisplayName}
+                    className="formInput"
+                />
+                <input
+                    type="submit"
+                    value="Update Profile"
+                    className="formBtn"
+                    style={{
+                        marginTop: 10,
+                    }}
+                />
+            </form>
+            <span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+                Log Out
+</span>
+        </div>
     );
 };
